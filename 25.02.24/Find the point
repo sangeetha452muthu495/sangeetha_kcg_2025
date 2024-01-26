@@ -1,0 +1,51 @@
+Consider two points,p=(px,py)  andq=(qx,qy) . We consider the inversion or point reflection,r=(rx,ry) , of point p across point  q to be a 180  rotation of point p around .
+
+Given n sets of points p and q, find  r for each pair of points and print two space-separated integers denoting the respective values of rx and ry  on a new line.
+
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'findPoint' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER px
+#  2. INTEGER py
+#  3. INTEGER qx
+#  4. INTEGER qy
+#
+
+def findPoint(px, py, qx, qy):
+    # Write your code here
+     p2q_x = qx - px
+     p2q_y = qy - py
+     r_pt = [qx + p2q_x, qy + p2q_y]
+     return r_pt
+
+if _name_ == '_main_':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    for n_itr in range(n):
+        first_multiple_input = input().rstrip().split()
+
+        px = int(first_multiple_input[0])
+
+        py = int(first_multiple_input[1])
+
+        qx = int(first_multiple_input[2])
+
+        qy = int(first_multiple_input[3])
+
+        result = findPoint(px, py, qx, qy)
+
+        fptr.write(' '.join(map(str, result)))
+        fptr.write('\n')
+
+    fptr.close()
