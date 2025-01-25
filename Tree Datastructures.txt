@@ -1,0 +1,233 @@
+import java.util.*;
+class TTnode{
+    int data;
+    TTnode left,right;
+    TTnode(){}
+    TTnode(int data){this.data=data;}
+}
+class Bst1{
+    TTnode root;
+    void addOuter(int data){
+        root=add(root,data);
+    }
+    TTnode add(TTnode node,int data){
+        if(node==null){
+            return new TTnode(data);
+        }
+        if(data>node.data){
+            node.right=add(node.right,data);
+            
+        }
+         if(data<node.data){
+            node.left=add(node.left,data);
+            
+        }
+        return node;  
+    }
+    void inOrder(TTnode node){
+        if(node!=null){
+          inOrder(node.left);
+          System.out.print(node.data+" ");
+          inOrder(node.right);
+        }
+    }
+    void preOrder(TTnode node){
+        if(node!=null){
+          System.out.print(node.data+" ");
+          preOrder(node.left);
+          preOrder(node.right);
+        }
+    }
+    void postOrder(TTnode node){
+        if(node!=null){
+          postOrder(node.left);
+          postOrder(node.right);
+          System.out.print(node.data+" ");
+        }
+    }
+    void levelOrder(TTnode node){
+        if(node==null){
+            return;
+        }
+        Queue <TTnode> q=new LinkedList<>();
+        q.add(node);
+        while(!q.isEmpty()){
+            TTnode n=q.remove();
+            System.out.print(n.data+" ");
+            if(n.left!=null){
+                q.add(n.left);
+            }
+            if(n.right!=null){
+                q.add(n.right);
+            }
+        }
+    }
+    boolean searchOuter(int data){
+        return search(root,data);
+    }
+    boolean search(TTnode node,int data){
+        if(node==null)
+        return false;
+        if(node.data==data)
+        return true;
+        return (data>node.data)?search(node.right,data):search(node.left,data);
+    }
+    int size(TTnode node){
+        if(node==null){
+            return 0;
+        }
+        return size(node.left)+size(node.right)+1;
+    }
+    int sizeOuter(){
+        return size(root);
+    }
+    int height(TTnode node){
+        if(node==null){
+            return -1;
+        }
+        return Math.max(height(node.left),height(node.right))+1;
+    }
+    int heightOuter(){
+        return height(root);
+    }
+    TTnode delete(TTnode node,int data){
+        if(node==null)
+        return node;
+        if(node.data<data){
+            node.left=delete(node.left,data);
+            return node;
+        }
+        if(node.data>data){
+            node.right=delete(node.right,data);
+            return node;
+        }
+        if(node.left==null)
+        return node.right;
+        
+                                                              
+        if(node.right==null)
+        return node.left;
+        node.data=minfinder(node.right);
+        node.right=delete(node.right,node.data);
+        return node;
+        }
+    int minfinder(TTnode node){
+        if(node==null){
+            return -1;
+        }
+        while(node.left!=null){
+            node=node.left;
+        }
+        return node.data;
+    }
+    void deleteOuter(int data){
+        root=delete(root,data);
+    }
+    
+    TTnode LowestCommonAnces(TTnode node,int p,int q){
+        if(node==null){
+            return null;
+        }
+        
+        if(node.data>p && node.data>q){
+         return LowestCommonAnces(node.left,p,q);
+        }
+         if(node.data<p && node.data<q){
+            return LowestCommonAnces(node.right,p,q);
+        }
+        
+        return root;
+    }
+    int LCAOuter(int p,int q){
+        if(!(searchOuter(p)) || !searchOuter(q) ){
+            return -1;
+        }
+        return LowestCommonAnces(root,p,q).data;
+
+    }
+    int ShortestDistance(TTnode node, int a,int b){
+        if(node==null){
+            return 0;
+        }
+        TTnode res=LowestCommonAnces(root,a,b);
+        return Distance(res,a)+Distance(res,b);
+    }
+    
+    
+      int Distance(TTnode  node,int a){
+          if(node.data==a || node==null){
+              return 0;
+          }
+          if(node.data>a){
+              return 1+Distance(node.left,a);
+          }
+          
+        return 1+Distance(node.right,a);
+          
+      }
+      int ShortestDistanceOuter(int a,int b){
+          return ShortestDistance(root,a,b);
+          
+      }
+            
+            
+        
+            
+    
+        
+    TTnode deleleaf(TTnode node){
+        
+        if(node==null){
+            return null;
+        }
+       if(node.left==null && node.right==null){
+           return null;
+       }
+       node.left=deleleaf(node.left);
+       node.right=deleleaf(node.right);        
+       
+        return node;
+        
+    }
+    void DeleleafOuter(){
+        root=deleleaf(root);
+    }
+    
+    
+    
+    void display(){
+        inOrder(root);
+        System.out.println(" ");
+        preOrder(root);
+        System.out.println(" ");
+        postOrder(root);
+        System.out.println(" ");
+        levelOrder(root);
+        System.out.println(" ");
+    }
+}
+
+public class Main{
+    public static void main(String args[]){
+        Bst1 b=new Bst1();
+       b.addOuter(10);
+       b.addOuter(3);
+       b.addOuter(11);
+       b.addOuter(2);
+       b.addOuter(20);
+       b.addOuter(12);
+       b.addOuter(14);
+       b.addOuter(22);
+       System.out.println(b.searchOuter(13));
+      System.out.println(b.sizeOuter());
+      System.out.println(b.heightOuter());
+      System.out.println(b.LCAOuter(2,11));
+      b.deleteOuter(14);
+      b.DeleleafOuter();
+      System.out.println(b.ShortestDistanceOuter(20,12));
+
+       b.display();
+        
+        
+    }
+}
